@@ -28,7 +28,7 @@ app.use(express.json());
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Email transporter
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER,
@@ -53,7 +53,7 @@ function loadDataFromCSV(filePath) {
       .pipe(csv())
       .on('data', (data) => results.push(data))
       .on('end', () => {
-        students = results.filter(person => !person.isDean);
+        students = results.filter(person => person.isDean === 'false');
         deans = results.filter(person => person.isDean === 'true');
         resolve({ students, deans });
       })
@@ -149,14 +149,14 @@ app.post('/start-attendance', (req, res) => {
   currentAttendanceEvent = {
     id: uuidv4(),
     deanEmail,
-    deanGrade: dean.grade,
+    deanGrade: dean.deanGrade,
     deanLocation,
     startTime: new Date(),
     active: true
   };
   
   // Initialize attendance data for all students in dean's grade
-  const gradeStudents = students.filter(s => s.grade === dean.grade);
+  const gradeStudents = students.filter(s => s.grade === dean.deanGrade);
   attendanceData = {};
   
   gradeStudents.forEach(student => {
@@ -341,6 +341,16 @@ app.get('/config', (req, res) => {
   });
 });
 
+// Test endpoint to verify backend is working
+app.get('/test', (req, res) => {
+  res.json({
+    message: 'Backend is working!',
+    students: students.map(s => ({ name: `${s.firstName} ${s.lastName}`, email: s.email, grade: s.grade })),
+    deans: deans.map(d => ({ name: `${d.firstName} ${d.lastName}`, email: d.email, deanGrade: d.deanGrade })),
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Socket.IO connection handling
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
@@ -353,6 +363,16 @@ io.on('connection', (socket) => {
     console.log('User disconnected:', socket.id);
   });
 });
+
+// Auto-load sample data on startup
+loadDataFromCSV('../sample_data.csv')
+  .then(() => {
+    console.log('Sample data loaded successfully');
+    console.log(`Students: ${students.length}, Deans: ${deans.length}`);
+  })
+  .catch(err => {
+    console.log('No sample data file found or error loading:', err.message);
+  });
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
