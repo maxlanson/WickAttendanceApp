@@ -67,12 +67,6 @@ The app expects a CSV file with the following columns:
 - `isDean`: "true" for deans, "false" for students
 - `deanGrade`: Grade that the dean supervises (only for deans)
 
-## Test Data
-
-Current test setup includes:
-- Student: Max Lanson (mlanson@brunswickschool.org, Grade 12)
-- Dean: Max Lanson (maxjlanson@gmail.com, Dean of Grade 12)
-
 ## API Endpoints
 
 - `POST /upload-data` - Upload student/dean CSV data
