@@ -1,0 +1,3 @@
+firstName,lastName,email,grade,isDean,deanGrade
+Max,Lanson,mlanson@brunswickschool.org,12,false,
+Max,Lanson,maxjlanson@gmail.com,,true,12
