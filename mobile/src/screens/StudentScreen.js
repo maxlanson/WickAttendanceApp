@@ -12,7 +12,7 @@ import PushNotification from 'react-native-push-notification';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import io from 'socket.io-client';
 
-const API_BASE_URL = 'http://localhost:3000'; // Change to your backend URL
+const API_BASE_URL = 'http://172.20.10.2:3000'; // Updated to computer's IP for device testing
 
 const StudentScreen = ({ user, onLogout }) => {
   const [attendanceEvent, setAttendanceEvent] = useState(null);

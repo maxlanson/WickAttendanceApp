@@ -11,7 +11,7 @@ import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 import io from 'socket.io-client';
 
-const API_BASE_URL = 'http://localhost:3000'; // Change this to your computer's IP for device testing
+const API_BASE_URL = 'http://172.20.10.2:3000'; // Updated to computer's IP for device testing
 
 const StudentScreen = ({ user, onLogout }) => {
   const [attendanceEvent, setAttendanceEvent] = useState(null);
