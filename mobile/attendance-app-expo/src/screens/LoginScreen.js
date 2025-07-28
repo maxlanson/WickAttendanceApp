@@ -8,7 +8,7 @@ import {
   TextInput,
 } from 'react-native';
 
-const API_BASE_URL = 'http://localhost:3000'; // Change this to your computer's IP for device testing
+const API_BASE_URL = 'http://172.20.10.2:3000'; // Updated to computer's IP for device testing
 
 const LoginScreen = ({ onLogin, navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -43,7 +43,7 @@ const LoginScreen = ({ onLogin, navigation }) => {
       }
     } catch (error) {
       console.error('Sign-in error:', error);
-      alert('Failed to connect to server. Make sure the backend is running on localhost:3000');
+      alert('Failed to connect to server. Make sure the backend is running on 172.20.10.2:3000');
     } finally {
       setLoading(false);
     }

@@ -4,7 +4,7 @@ import PushNotification from 'react-native-push-notification';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { useNavigation } from '@react-navigation/native';
 
-const API_BASE_URL = 'http://localhost:3000'; // Change to your backend URL
+const API_BASE_URL = 'http://172.20.10.2:3000'; // Change to your backend URL
 
 const DeanScreen = ({ user, onLogout }) => {
   const navigation = useNavigation();

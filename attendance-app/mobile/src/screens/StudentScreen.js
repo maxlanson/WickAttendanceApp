@@ -12,7 +12,7 @@ import PushNotification from 'react-native-push-notification';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import io from 'socket.io-client';
 
-const API_BASE_URL = 'http://localhost:3000'; // Change to your backend URL
+const API_BASE_URL = 'http://172.20.10.2:3000'; // Change to your backend URL
 
 const StudentScreen = ({ user, onLogout }) => {
   const [attendanceEvent, setAttendanceEvent] = useState(null);
@@ -26,7 +26,7 @@ const StudentScreen = ({ user, onLogout }) => {
   useEffect(() => {
     // Get app configuration
     fetchConfig();
-    
+
     // Subscribe to Socket.IO for real-time updates
     const socket = io(API_BASE_URL);
 
@@ -34,14 +34,14 @@ const StudentScreen = ({ user, onLogout }) => {
       if (data.grade === user.grade) {
         setAttendanceEvent(data);
         setAttendanceStatus('absent');
-        
+
         // Show push notification
         PushNotification.localNotification({
           channelId: 'attendance-channel',
           title: 'Attendance Started',
           message: data.message,
         });
-        
+
         // Start location tracking
         startLocationTracking();
       }
@@ -85,7 +85,7 @@ const StudentScreen = ({ user, onLogout }) => {
     try {
       const response = await fetch(`${API_BASE_URL}/attendance-data`);
       const data = await response.json();
-      
+
       if (data.active && data.data[user.email]) {
         setAttendanceEvent(data.event);
         setAttendanceStatus(data.data[user.email].status);
@@ -101,7 +101,7 @@ const StudentScreen = ({ user, onLogout }) => {
       (position) => {
         const { latitude, longitude } = position.coords;
         setCurrentLocation({ latitude, longitude });
-        
+
         if (attendanceEvent && attendanceEvent.deanLocation) {
           const dist = calculateDistance(
             latitude,
@@ -109,7 +109,7 @@ const StudentScreen = ({ user, onLogout }) => {
             attendanceEvent.deanLocation.latitude,
             attendanceEvent.deanLocation.longitude
           );
-          
+
           setDistance(Math.round(dist));
           setCheckInEnabled(dist <= checkInDistance && attendanceStatus !== 'present');
         }
@@ -132,10 +132,10 @@ const StudentScreen = ({ user, onLogout }) => {
     const R = 3959; // Earth's radius in miles
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-              Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c * 5280; // Convert to feet
     return distance;
   };
@@ -234,7 +234,7 @@ const StudentScreen = ({ user, onLogout }) => {
       {attendanceEvent ? (
         <View style={styles.eventContainer}>
           <Text style={styles.eventTitle}>Attendance Event Active</Text>
-          
+
           {distance !== null && (
             <Text style={styles.distanceText}>
               Distance from dean: {distance} ft (Allowed: {checkInDistance} ft)
@@ -263,8 +263,8 @@ const StudentScreen = ({ user, onLogout }) => {
             {attendanceStatus === 'present'
               ? 'You are marked as present!'
               : checkInEnabled
-              ? 'You are in range! Tap to check in.'
-              : 'Move closer to your dean to check in.'}
+                ? 'You are in range! Tap to check in.'
+                : 'Move closer to your dean to check in.'}
           </Text>
         </View>
       ) : (

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'rea
 import * as Location from 'expo-location';
 import io from 'socket.io-client';
 
-const API_BASE_URL = 'http://localhost:3000'; // Change this to your computer's IP for device testing
+const API_BASE_URL = 'http://172.20.10.2:3000'; // Updated to computer's IP for device testing
 
 const DeanScreen = ({ user, onLogout }) => {
   const [attendanceData, setAttendanceData] = useState([]);

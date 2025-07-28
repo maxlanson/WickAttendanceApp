@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
-const API_BASE_URL = 'http://localhost:3000'; // Change to your backend URL
+const API_BASE_URL = 'http://172.20.10.2:3000'; // Change to your backend URL
 
 const LoginScreen = ({ onLogin, navigation }) => {
   const [loading, setLoading] = useState(false);
